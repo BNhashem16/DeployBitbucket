@@ -1,24 +1,22 @@
 {
-    "name": ":vendor_slug/:package_slug",
+    "name": "bnhashem/deploy-bitbucket",
     "description": ":package_description",
     "keywords": [
         ":vendor_name",
         "laravel",
-        ":package_slug"
+        "deploy-bitbucket"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/BNhashem16/deploy-bitbucket",
     "license": "MIT",
-    "authors": [
-        {
-            "name": ":author_name",
-            "email": "author@domain.com",
-            "role": "Developer"
-        }
-    ],
+    "authors": [{
+        "name": "Ahmed Hashem",
+        "email": "me@ahashem.info",
+        "role": "Developer"
+    }],
     "require": {
-        "php": "^8.0",
+        "php": "^7.3|^8.0",
         "spatie/laravel-package-tools": "^1.9.2",
-        "illuminate/contracts": "^8.37"
+        "illuminate/contracts": "^8.0|^7.0|^6.0|^5.5"
     },
     "require-dev": {
         "nunomaduro/collision": "^5.10",
@@ -34,15 +32,10 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories"
+            "Bnhashem\\DeployBitbucket\\": "src"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
-        }
-    },
+
     "scripts": {
         "phpstan": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
@@ -54,11 +47,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
-            ],
-            "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\SkeletonFacade"
-            }
+                "Bnhashem\\DeployBitbucket\\DeployBitbucketServiceProvider"
+            ]
         }
     },
     "minimum-stability": "dev",
