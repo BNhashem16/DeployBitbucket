@@ -42,7 +42,7 @@ Note: Adding this Variable name
 Note: Adding your server public key
 
 ##### 5. Choose SSH Keys tab from Pipeline section  
-![App Screenshot](https://github.com/BNhashem16/deploy-bitbucket/blob/main/screenshots/5.PNG?raw=true)
+![App Screenshot](https://raw.githubusercontent.com/BNhashem16/deploy-bitbucket/main/screenshots/5.PNG)
 Notes:
 - Copy this public key to ~/.ssh/authorized_keys on the remote host.
 - Adding Host address
