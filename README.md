@@ -23,17 +23,35 @@ php artisan vendor:publish --provider="Bnhashem\DeployBitbucket\DeployBitbucketS
 
 ## Bitbucket Optimizations
 
-**1:** Go to Repository setting 
-**2:** Choose Deployments tab 
+##### 1. Go to Repository setting 
+##### 2. Choose Deployments tab 
+![App Screenshot](https://github.com/BNhashem16/deploy-bitbucket/blob/main/screenshots/1.PNG?raw=true)
 
+##### 2. Choose which environment you want to deploy your code  
+![App Screenshot](https://github.com/BNhashem16/deploy-bitbucket/blob/main/screenshots/2.PNG?raw=true)
+Note: Adding this Variable name `DEPLOY_PATH` with the project path value `/home/username/public_html/project_name`
 
+##### 3. Choose Repository variables tab  
+![App Screenshot](https://github.com/BNhashem16/deploy-bitbucket/blob/main/screenshots/3.PNG?raw=true)
+Note: Adding this Variable name 
+**1.** `DEPLOY_HOST` Adding your host value `87.1833.487.980`
+**2.** `DEPLOY_USER` Adding your username value `username_value`
 
-```php
-$skeleton = new VendorName\Skeleton();
-echo $skeleton->echoPhrase('Hello, VendorName!');
-```
+##### 4. Choose Access Keys tab from General section  
+![App Screenshot](https://github.com/BNhashem16/deploy-bitbucket/blob/main/screenshots/4.PNG?raw=true)
+Note: Adding your server public key
 
-## Changelog
+##### 5. Choose SSH Keys tab from Pipeline section  
+![App Screenshot](https://github.com/BNhashem16/deploy-bitbucket/blob/main/screenshots/5.PNG?raw=true)
+Notes:
+- Copy this public key to ~/.ssh/authorized_keys on the remote host.
+- Adding Host address
+- Click Fetch 
+---
+
+## Server Optimizations
+
+##### 1. create your folder of your project 
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
@@ -47,7 +65,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [:author_name](https://github.com/:author_username)
+- [:author_name](https://github.com/BNhashem16)
 - [All Contributors](../../contributors)
 
 ## License
