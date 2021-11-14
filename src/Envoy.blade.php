@@ -1,3 +1,4 @@
+@include('bitbucket.php')
 @servers(['web' => $user.'@'.$host,'localhost' => '127.0.0.1'])
 
 @setup
@@ -27,11 +28,9 @@ if (!(preg_match("/(\/home\/|\/var\/www\/)/i", $path) === 1)) {
 exit('ERROR: $path provided doesn\'t look like a web directory path?');
 }
 
-$date = ( new DateTime )->format('YmdHis');
-
 $current_release_dir = $path . '/current';
 $releases_dir = $path . '/releases';
-$new_release_dir = $releases_dir . '/' . $date;
+$new_release_dir = $releases_dir . '/' . $build . '_' . $commit;
 
 $remote = $user . '@' . $host . ':' . $new_release_dir;
 
@@ -41,7 +40,6 @@ $php = empty($php) ? 'php' : $php;
 @endsetup
 
 @story('deploy')
-create_folders
 rsync
 manifest_file
 setup_symlinks
@@ -49,20 +47,14 @@ verify_install
 activate_release
 optimise
 migrate
-additional_tasks
+
+@if($cleanupVersions)
 cleanup
+@endif
 @endstory
 
 @task('debug', ['on' => 'localhost'])
 ls -la {{ $dir }}
-@endtask
-
-@task('create_folders', ['on' => 'web'])
-echo "*Create storage folder if not exist*"
-mkdir -p {{ $path }}/storage
-
-echo "*Create releases folder if not exist*"
-mkdir -p {{ $path }}/releases
 @endtask
 
 @task('rsync', ['on' => 'localhost'])
@@ -78,18 +70,15 @@ echo -e "{\"build\":\""{{ $build }}"\", \"commit\":\""{{ $commit }}"\", \"branch
 
 @task('setup_symlinks', ['on' => 'web'])
 echo "* Linking .env file to new release dir ({{ $path }}/.env -> {{ $new_release_dir }}/.env) *"
-ln -nsf {{ $path }}/.env {{ $new_release_dir }}/.env
+ln -nfs {{ $path }}/.env {{ $new_release_dir }}/.env
 
-if [ -d {{ $new_release_dir }}/storage ]; then
+if [ -f {{ $new_release_dir }}/storage ]; then
 echo "* Moving existing storage dir *"
 mv {{ $new_release_dir }}/storage {{ $new_release_dir }}/storage.orig 2>/dev/null
-echo "* Remove existing storage dir *"
-rm -rf {{ $new_release_dir }}/storage
 fi
 
 echo "* Linking storage directory to new release dir ({{ $path }}/storage -> {{ $new_release_dir }}/storage) *"
-ln -nsf {{ $path }}/storage {{ $new_release_dir }}/storage
-ln -nsf {{ $path }}/storage/app/public {{ $new_release_dir }}/public/storage
+ln -nfs {{ $path }}/storage {{ $new_release_dir }}/storage
 @endtask
 
 @task('verify_install', ['on' => 'web'])
@@ -100,58 +89,37 @@ cd {{ $new_release_dir }}
 
 @task('activate_release', ['on' => 'web'])
 echo "* Activating new release ({{ $new_release_dir }} -> {{ $current_release_dir }}) *"
-ln -nsf {{ $new_release_dir }} {{ $current_release_dir }}
-
+ln -nfs {{ $new_release_dir }} {{ $current_release_dir }}
 @endtask
+
 
 @task('migrate', ['on' => 'web'])
 echo '* Running migrations *'
 cd {{ $new_release_dir }}
-{{ $php }} artisan migrate:fresh --seed
+
+{{ $php }} artisan {{ ' '. $migration }} --force
+
 @endtask
 
 @task('optimise', ['on' => 'web'])
 echo '* Clearing cache and optimising *'
 cd {{ $new_release_dir }}
 
+@if($clearCache)
 {{ $php }} artisan cache:clear
+@endif
+@if($clearConfig)
 {{ $php }} artisan config:clear
+@endif
+@if($clearRoute)
 {{ $php }} artisan route:clear
+@endif
+@if($clearView)
 {{ $php }} artisan view:clear
-
-#or
-#{{ $php }} artisan optimize:clear
-
-
-echo "Queue restarted"
-{{ $php }} artisan queue:restart
-
-echo "Cache"
-{{ $php }} artisan config:cache
-{{ $php }} artisan view:cache
-
-# Only use when no closure used in routes
-{{ $php }} artisan optimize
-{{ $php }} artisan route:cache
-
-echo "Deployment ({{ $date }}) finished"
-@endtask
-
-@task('additional_tasks', ['on' => 'web'])
-cd {{ $new_release_dir }}
-
-echo "* Additional Tasks *"
-
+@endif
 @endtask
 
 @task('cleanup', ['on' => 'web'])
 echo "* Executing cleanup command in {{ $releases_dir }} *"
-
-#find . -maxdepth 1 -name "20*" | sort | tail -n 2 | head -n1 | xargs rm -Rf
-@endtask
-
-@task('deployment_rollback')
-#cd {{ $path }}
-#ln -nsf {{ $path }}/$(find . -maxdepth 1 -name "20*" | sort | tail -n 2 | head -n1) {{ $path }}/current
-echo "Rolled back to $(find . -maxdepth 1 -name "20*" | sort | tail -n 2 | head -n1)"
+ls -dt {{ $releases_dir }}/*/ | tail -n +{{ $cleanupVersionsCount }} | xargs rm -rf
 @endtask

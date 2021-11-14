@@ -51,7 +51,24 @@ Notes:
 
 ## Server Optimizations
 
-##### 1. create your folder of your project 
+##### 1. create your folder of your project
+##### 2. Go to the project directory 
+
+Using the Linux terminal, use the following commands to create the directory structure.
+
+```bash
+  cd /path/to/project_name
+  mkdir -p storage/framework/{sessions,views,cache}
+```
+You also need to set permissions to allow Laravel to write data in this directory.
+
+```bash
+chmod -R 777 framework
+chown -R username:username /path/to/your/project_name/storage
+
+```
+
+##### 3. copy .env file of your project and check variables values  
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
