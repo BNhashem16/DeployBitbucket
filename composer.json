@@ -1,8 +1,12 @@
 {
     "name": "bnhashem/deploy-bitbucket",
-    "description": ":package_description",
+    "description": "Deploy your project to server using bitbucket",
     "keywords": [
-        ":vendor_name",
+        "Ahmed Hashem",
+        "Hashem",
+        "Deploy",
+        "bitbucket",
+        "bnhashem",
         "laravel",
         "deploy-bitbucket"
     ],

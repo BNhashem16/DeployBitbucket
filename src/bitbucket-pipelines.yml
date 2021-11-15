@@ -3,7 +3,7 @@ image: php:7.2-fpm
 definitions:
   steps:
     - step: &php-build
-        name: Build PHP
+        name: Build PHP & Install Composer
         caches:
           - composer
         script:
@@ -58,13 +58,13 @@ definitions:
 pipelines:
   default:
     - step: *php-build
-    # - step: *php-test
-    # - step: *npm-build
+    - step: *php-test
+    - step: *npm-build
   branches:
     master:
       - step: *php-build
-      # - step: *php-test
-      # - step: *npm-build
+      - step: *php-test
+      - step: *npm-build
       - step: *deploy-production
     develop:
       - step: *php-build

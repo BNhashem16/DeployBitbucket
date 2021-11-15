@@ -47,10 +47,7 @@ verify_install
 activate_release
 optimise
 migrate
-
-@if($cleanupVersions)
 cleanup
-@endif
 @endstory
 
 @task('debug', ['on' => 'localhost'])
@@ -92,14 +89,18 @@ echo "* Activating new release ({{ $new_release_dir }} -> {{ $current_release_di
 ln -nfs {{ $new_release_dir }} {{ $current_release_dir }}
 @endtask
 
-
 @task('migrate', ['on' => 'web'])
+@if($migration == 'migrate' | $migration == 'migrate:fresh' | $migration == 'migrate:fresh --seed')
 echo '* Running migrations *'
 cd {{ $new_release_dir }}
+{{ $php }} artisan {{ $migration }} --force
+@else
+echo '* You stoped the migrations *'
 
-{{ $php }} artisan {{ ' '. $migration }} --force
+@endif
 
 @endtask
+
 
 @task('optimise', ['on' => 'web'])
 echo '* Clearing cache and optimising *'
