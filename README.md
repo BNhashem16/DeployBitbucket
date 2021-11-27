@@ -18,11 +18,37 @@ You can publish and run the bitbucket yml file with:
 ```bash
 php artisan vendor:publish --provider="Bnhashem\DeployBitbucket\DeployBitbucketServiceProvider"
 ```
+
+- This command publish this files
+  - bitbucket.php
+  - bitbucket-pipelines.yml
+  - deployment-exclude-list.txt
+  - Envoy.blade.php
+
 ---
+
+#### bitbucket-pipelines.yml
+* you can set your repositories setthing from this file, you can manage branches and tasks.
+
+## Config File Optimizations
+- can find this file in project_name/config/bitbucket.php
+
+| Variable | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `clearCache` | `bool` | **Required**. set it true if you want to clear cache |
+| `clearConfig` | `bool` | **Required**. set it true if you want to clear config |
+| `clearRoute` | `bool` | **Required**. set it true if you want to clear route |
+| `clearView` | `bool` | **Required**. set it true if you want to clear view |
+| `cleanupVersions` | `bool` | **Required**. set it true if you want to clear oldest version of your code |
+| `cleanupVersionsCount` | `integer` | **Required**. how many versions do you want to delete it |
+| `migration`, `migrate:fresh`, `migrate:refresh --seed`, `migrate:refresh --seed`, `migrate:refresh` | `string` | **Required**. you can but any artisan migrations commands such as 'migrate', 'migrate:refresh --seed', but be carful don't write 'php artisan we handle it from our side' |
+| `additionalTasks` | `array` | **Required**. put your custom commands in this array, Separate commands with a comma |
 
 ## Bitbucket Optimizations
 
 ##### 1. Go to Repository setting 
+* Note: Make sure you are admin to show this tab
+
 ##### 2. Choose Deployments tab 
 ![App Screenshot](https://github.com/BNhashem16/deploy-bitbucket/blob/main/screenshots/1.PNG?raw=true)
 
@@ -81,7 +107,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [:author_name](https://github.com/BNhashem16)
+- [bnhashem](https://github.com/BNhashem16)
 - [All Contributors](../../contributors)
 
 ## License

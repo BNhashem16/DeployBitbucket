@@ -1,38 +1,29 @@
 <?php
 
- /**
-  * @var bool
-  */
- $migrate = false;
+   /*
+      |--------------------------------------------------------------------------
+      | Clear Cache options
+      |--------------------------------------------------------------------------
+      |
+      | clearCache: true or false
+      | if you want to clear cache but it true, else but it false
+
+   */
+   $clearCache = true;
 
 /**
  * @var bool
- */
-$migrateAndSeed = false;
-
-/**
- * @var bool
- */
-$migrateAndFreshAndSeed = false;
-
-/**
- * @var bool
- */
-$clearCache = true;
-
-/**
- * @var bool
- */
+*/
 $clearConfig = true;
 
 /**
  * @var bool
- */
+*/
 $clearRoute = true;
 
 /**
  * @var bool
- */
+*/
 $clearView = true;
 
    /*
@@ -53,6 +44,8 @@ $clearView = true;
     | Migrations options
     |--------------------------------------------------------------------------
     |
-    | Supported: 'migrate', 'migrate:fresh', 'migrate:fresh --seed'
+    | Supported: 'migrate', 'migrate:fresh', 'migrate:fresh --seed', 'migrate:refresh --seed', 'migrate:refresh'
     */
-    $migration = 'migrate';
+    $migration = '';
+
+   $additionalTasks = [];

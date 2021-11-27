@@ -47,6 +47,7 @@ verify_install
 activate_release
 optimise
 migrate
+additional_tasks
 cleanup
 @endstory
 
@@ -90,7 +91,7 @@ ln -nfs {{ $new_release_dir }} {{ $current_release_dir }}
 @endtask
 
 @task('migrate', ['on' => 'web'])
-@if($migration == 'migrate' | $migration == 'migrate:fresh' | $migration == 'migrate:fresh --seed')
+@if($migration !== '')
 echo '* Running migrations *'
 cd {{ $new_release_dir }}
 {{ $php }} artisan {{ $migration }} --force
@@ -101,6 +102,17 @@ echo '* You stoped the migrations *'
 
 @endtask
 
+@task('additional_tasks', ['on' => 'web'])
+echo '* Running Additional Tasks *'
+@if (!empty($additionalTasks))
+cd {{ $new_release_dir }}
+@foreach ($additionalTasks as $task)
+{{ $php }} artisan {{ $task }}
+@endforeach
+@else
+echo '* There is No Additional Tasks *'
+@endif
+@endtask
 
 @task('optimise', ['on' => 'web'])
 echo '* Clearing cache and optimising *'

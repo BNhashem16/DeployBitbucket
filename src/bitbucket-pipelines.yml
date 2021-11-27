@@ -17,7 +17,7 @@ definitions:
     - step: &php-test
         name: Test PHP
         script:
-          - cp .env.example .env
+          - cp .env.example.testing .env
           - php artisan key:generate
           - ./vendor/bin/phpunit --log-junit ./test-reports/junit.xml
         artifacts:
@@ -63,8 +63,8 @@ pipelines:
   branches:
     master:
       - step: *php-build
-      - step: *php-test
-      - step: *npm-build
+      # - step: *php-test
+      # - step: *npm-build
       - step: *deploy-production
     develop:
       - step: *php-build
